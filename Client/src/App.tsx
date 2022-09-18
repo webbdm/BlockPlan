@@ -4,6 +4,7 @@ import { useQuery, gql } from "@apollo/client";
 import { Block } from "./typescript/interfaces";
 import BlockComponent from "./components/blocks/Block";
 
+
 const GET_BLOCKS = gql`
   query GetBlocks {
     blocks {
