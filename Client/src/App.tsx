@@ -1,21 +1,38 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.scss';
+import React from "react";
+import "./App.scss";
+import { useQuery, gql } from "@apollo/client";
+import { Block } from "./typescript/interfaces";
+import BlockComponent from "./components/blocks/Block";
 
-function App() {
+const GET_BLOCKS = gql`
+  query GetBlocks {
+    blocks {
+      due_date
+      text
+      title
+      block_id
+      block_type_id
+      created_at
+      completed
+    }
+  }
+`;
+
+const App = () => {
+  const { loading, error, data } = useQuery(GET_BLOCKS);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error :</p>;
+
   return (
-    <div className='App'>
-      <header className='App-header'>
-        <img src={logo} className='App-logo' alt='logo' />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a className='App-link' href='https://reactjs.org' target='_blank' rel='noopener noreferrer'>
-          Learn React
-        </a>
-      </header>
+    <div className="App">
+      <div>
+        {data.blocks.map((block: Block) => (
+          <BlockComponent key={block.block_id} block={block} />
+        ))}
+      </div>
     </div>
   );
-}
+};
 
 export default App;
